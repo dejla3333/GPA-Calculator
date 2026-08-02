@@ -1,0 +1,627 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>GPA Dashboard</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+<style>
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+body{
+    font-family:"Inter",sans-serif;
+    min-height:100vh;
+    background:
+    radial-gradient(circle at top left,#2563eb55,transparent 35%),
+    radial-gradient(circle at bottom right,#9333ea55,transparent 35%),
+    #020617;
+
+    color:white;
+    padding:40px 20px;
+}
+
+
+.container{
+
+    max-width:1100px;
+    margin:auto;
+
+    background:rgba(255,255,255,0.08);
+
+    backdrop-filter:blur(20px);
+
+    border:1px solid rgba(255,255,255,.15);
+
+    border-radius:30px;
+
+    padding:40px;
+
+    box-shadow:
+    0 20px 60px rgba(0,0,0,.4);
+
+    animation:fade .7s ease;
+
+}
+
+
+@keyframes fade{
+
+from{
+opacity:0;
+transform:translateY(30px);
+}
+
+to{
+opacity:1;
+transform:translateY(0);
+}
+
+}
+
+
+.header{
+
+display:flex;
+justify-content:space-between;
+align-items:center;
+flex-wrap:wrap;
+gap:20px;
+
+}
+
+
+h1{
+
+font-size:38px;
+
+}
+
+
+.subtitle{
+
+color:#cbd5e1;
+margin-top:8px;
+
+}
+
+
+
+.dashboard{
+
+display:grid;
+
+grid-template-columns:repeat(auto-fit,minmax(300px,1fr));
+
+gap:25px;
+
+margin-top:35px;
+
+}
+
+
+
+.card{
+
+background:rgba(255,255,255,.08);
+
+border:1px solid rgba(255,255,255,.15);
+
+border-radius:24px;
+
+padding:25px;
+
+transition:.3s;
+
+}
+
+
+
+.card:hover{
+
+transform:translateY(-5px);
+
+background:rgba(255,255,255,.12);
+
+}
+
+
+
+.card h2{
+
+font-size:20px;
+
+margin-bottom:20px;
+
+}
+
+
+
+.competency{
+
+display:flex;
+
+justify-content:space-between;
+
+align-items:center;
+
+padding:12px;
+
+margin:10px 0;
+
+background:rgba(255,255,255,.06);
+
+border-radius:14px;
+
+}
+
+
+
+select{
+
+background:#0f172a;
+
+color:white;
+
+border:1px solid #475569;
+
+padding:8px 12px;
+
+border-radius:10px;
+
+cursor:pointer;
+
+}
+
+
+
+button{
+
+width:100%;
+
+margin-top:35px;
+
+padding:16px;
+
+border:none;
+
+border-radius:16px;
+
+font-size:17px;
+
+font-weight:600;
+
+color:white;
+
+cursor:pointer;
+
+background:linear-gradient(
+135deg,
+#2563eb,
+#9333ea
+);
+
+
+transition:.3s;
+
+}
+
+
+
+button:hover{
+
+transform:scale(1.03);
+
+box-shadow:0 10px 30px #2563eb88;
+
+}
+
+
+
+/* GPA Circle */
+
+
+.circle{
+
+width:190px;
+
+height:190px;
+
+border-radius:50%;
+
+display:flex;
+
+align-items:center;
+
+justify-content:center;
+
+margin:auto;
+
+background:
+conic-gradient(
+#60a5fa 0deg,
+#9333ea 0deg,
+rgba(255,255,255,.1) 0deg
+);
+
+}
+
+
+
+.circle-inner{
+
+width:150px;
+
+height:150px;
+
+background:#020617;
+
+border-radius:50%;
+
+display:flex;
+
+align-items:center;
+
+justify-content:center;
+
+flex-direction:column;
+
+}
+
+
+
+.circle-inner strong{
+
+font-size:40px;
+
+}
+
+
+
+.result-text{
+
+text-align:center;
+
+margin-top:20px;
+
+color:#cbd5e1;
+
+}
+
+
+
+
+@media(max-width:600px){
+
+.container{
+
+padding:25px;
+
+}
+
+h1{
+
+font-size:28px;
+
+}
+
+}
+
+</style>
+
+</head>
+
+
+<body>
+
+
+<div class="container">
+
+
+<div class="header">
+
+<div>
+
+<h1>GPA Dashboard</h1>
+
+<p class="subtitle">
+ Competency performance tracker
+</p>
+
+</div>
+
+
+</div>
+
+
+
+<div class="dashboard">
+
+
+<div class="card">
+
+
+<h2>Foundational Competencies</h2>
+
+<div id="foundational"></div>
+
+
+</div>
+
+
+
+
+<div class="card">
+
+
+<h2> Advanced Competencies</h2>
+
+
+<div id="advanced"></div>
+
+
+</div>
+
+
+
+
+<div class="card">
+
+
+<h2>GPA Performance</h2>
+
+
+<div class="circle" id="circle">
+
+
+<div class="circle-inner">
+
+<strong id="gpa">
+0
+</strong>
+
+<span>/4</span>
+
+
+</div>
+
+</div>
+
+
+<p class="result-text" id="details">
+
+Calculate your GPA
+
+</p>
+
+
+</div>
+
+
+
+</div>
+
+
+
+<button onclick="calculateGPA()">
+Calculate GPA
+</button>
+
+
+
+</div>
+
+
+
+
+
+<script>
+
+
+const levelValue={
+
+P:3,
+
+RP:3.5,
+
+EP:4
+
+};
+
+
+
+function createSelect(id){
+
+return `
+
+<select id="${id}">
+
+<option value="P">
+P - 3
+</option>
+
+<option value="RP">
+RP - 3.5
+</option>
+
+
+<option value="EP">
+EP - 4
+</option>
+
+
+</select>
+
+`;
+
+}
+
+
+
+const foundational=
+document.getElementById("foundational");
+
+
+const advanced=
+document.getElementById("advanced");
+
+
+
+for(let i=0;i<21;i++){
+
+
+foundational.innerHTML+=`
+
+<div class="competency">
+
+<span>
+Foundation ${i+1}
+</span>
+
+
+${createSelect("f"+i)}
+
+
+</div>
+
+`;
+
+
+}
+
+
+
+for(let i=0;i<5;i++){
+
+
+advanced.innerHTML+=`
+
+<div class="competency">
+
+<span>
+Advanced ${i+1}
+</span>
+
+
+${createSelect("a"+i)}
+
+
+</div>
+
+`;
+
+
+}
+
+
+
+
+
+function average(ids){
+
+
+let total=0;
+
+
+ids.forEach(id=>{
+
+
+total+=levelValue[
+document.getElementById(id).value
+];
+
+
+});
+
+
+return total/ids.length;
+
+
+}
+
+
+
+
+function calculateGPA(){
+
+
+
+let f=[];
+
+let a=[];
+
+
+
+for(let i=0;i<21;i++)
+f.push("f"+i);
+
+
+
+for(let i=0;i<5;i++)
+a.push("a"+i);
+
+
+
+let fAvg=average(f);
+
+let aAvg=average(a);
+
+
+
+let gpa=(fAvg*.5)+(aAvg*.5);
+
+
+
+document.getElementById("gpa")
+.innerHTML=gpa.toFixed(2);
+
+
+
+let percent=(gpa/4)*360;
+
+
+
+document.getElementById("circle")
+.style.background=
+
+`
+conic-gradient(
+#60a5fa ${percent}deg,
+#9333ea ${percent}deg,
+rgba(255,255,255,.1) ${percent}deg
+)
+`;
+
+
+
+document.getElementById("details")
+.innerHTML=
+
+`
+Foundational:
+${fAvg.toFixed(2)}
+<br>
+
+Advanced:
+${aAvg.toFixed(2)}
+
+`;
+
+
+
+}
+
+
+</script>
+
+
+</body>
+
+</html>
