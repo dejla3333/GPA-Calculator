@@ -50,3 +50,7 @@ The purpose of this project is to create a simple tool for tracking my academic 
 ## Author
 
 **Dejla Sharifi**
+
+## 🛠️ Skills
+
+<img src="https://skillicons.dev/icons?i=html,css,js,react,nextjs,python,git,github" />
