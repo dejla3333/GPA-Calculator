@@ -43,14 +43,11 @@ This project is a GPA calculation tool created to evaluate my performance across
 3. The application calculates the GPA based on selected levels.
 4. The final GPA and competency averages are displayed.
 
-## Purpose
-
-The purpose of this project is to create a simple tool for tracking my academic progress and understanding my performance across different competencies.
 
 ## Author
 
 **Dejla Sharifi**
 
-## 🛠️ Skills
+##  Skills
 
 <img src="https://skillicons.dev/icons?i=html,css,js,react,nextjs,python,git,github" />
